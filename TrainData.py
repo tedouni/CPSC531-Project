@@ -1,5 +1,5 @@
-import ParseEmail
-
+from ParseEmail import parseEmail
+import os
 
 def analyzeEmail(bodyOfEmail, isSpam, totalSpamWord, totalHamWord):
 
@@ -15,10 +15,7 @@ def analyzeEmail(bodyOfEmail, isSpam, totalSpamWord, totalHamWord):
         totalHamWord += 1
 
 
-def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam):
-    #initiate
-    totalEmail = 0
-    numberOfSpam = 0
+def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam):
 
 
     #start train for spam
@@ -26,11 +23,34 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam):
     #hamData = emails that are not spam
 
 
-    #TODO: Change for loop to iterate through all files in spam directory.
-    #Call parseemail to parse email to return body (wihtout html)
-    for email in spamData:
+
+    pathHam = '/Users/tedouni/Desktop/531Project/testData/ham/'
+    pathSpam = '/Users/tedouni/Desktop/531Project/testData/spam/'
+
+    #SPAM
+    for fileName in os.listdir(pathSpam):
+        wordList = parseEmail(pathSpam + fileName)
         numberOfSpam += 1
         totalEmail += 1
+        analyzeEmail(wordList,True,totalSpamWord,totalHamWord)
 
-    for email in hamData::
+
+    #HAM
+    for fileName in os.listdir(pathHam):
+        wordList= parseEmail(pathHam + fileName)
+        numberOfHam += 1
         totalEmail += 1
+        analyzeEmail(wordList,False,totalSpamWord,totalHamWord)
+
+
+    pIsHam = float(numberOfHam)/float(totalEmail)
+    pIsSpam = float(numberOfSpam)/float(totalEmail)
+
+    print pIsHam
+    print pIsSpam
+
+
+
+
+
+train(0,0,0,0,0,0,0)

@@ -2,9 +2,9 @@ from TrainData import train
 from TrainData import analyzeEmail
 #import createDatabase
 
-# Number of Spam emails 1397
-# Number of Ham emails 5051
-#Total emails = 6448
+# Number of Spam emails 1398
+# Number of Ham emails 5052
+#Total emails = 6450
 
 #Prob(Spam) = 0.21665632754
 #Prob(~Spam) = 1- P(spam)= 0.78334367246
@@ -37,7 +37,7 @@ def main():
     #modify database
     train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam)
 
-    
+
 
 
 

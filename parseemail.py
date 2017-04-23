@@ -42,18 +42,17 @@ def convertToList(body):
 
 
 #http://stackoverflow.com/questions/18262293/python-open-every-file-in-a-folder
-path = '/Users/tedouni/Desktop/531Project/testData/ham/'
-for fileName in os.listdir(path):
+#path = '/Users/tedouni/Desktop/531Project/testData/ham/'
+
+def parseEmail(path):
 
     # print fileName
-    with open(path+fileName) as f:
+    with open(path) as f:
         text = f.read()
         e = email.message_from_string(text)
         body = e.get_payload()
         if isinstance(body, list):
             body = ''.join(map(str,body))
-        #print body
-        print '\n\n\n'
-        print 'List as follows:'
+
         words = convertToList(body)
-        print words
+        return words
