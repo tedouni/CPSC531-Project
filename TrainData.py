@@ -5,13 +5,17 @@ def analyzeEmail(bodyOfEmail, isSpam, totalSpamWord, totalHamWord):
 
     if(isSpam):
 
-        #TODO:Check if word exist in database, if so increase  for spam frequency
+        #TODO:Check if word exist in database
+        #if so increase  for spam frequency
+        #else create entry for data base and set spam frequency to 1 and HAM =0
 
         totalSpamWord += 1
 
 
     else:   #Not Spam
-    #TODO:Check if word exist in database, if so increase for ham frequency
+    #TODO:Check if word exist in database,
+    #if so increase for ham frequency
+    #Else create entry for database and set HAM (not spam) frequency to 1 and spam = 0
         totalHamWord += 1
 
 
