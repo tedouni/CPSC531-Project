@@ -4,10 +4,9 @@
 
 import email
 import os
+import string
 from HTMLParser import HTMLParser
 
-
-import email
 from os.path import dirname, basename
 
 
@@ -25,12 +24,33 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
+def convertToList(body):
+    #Remove HTML
+    body = strip_tags(body)
 
-with open('0022.7241da4491c49b50c0470a3638ee35c4') as f:
+    #remove punctuation
+    for p in string.punctuation:
+        body = body.replace(p,'')
+
+    #To Lower
+    body = body.lower()
+
+    #Split into list of words
+    listOfWords = body.split()
+
+    return listOfWords
+
+
+
+
+with open('02474.c76ffef81a2529389e6c3bbb172184d7') as f:
     text = f.read()
     e = email.message_from_string(text)
     body = e.get_payload()
     if isinstance(body, list):
         body = ''.join(map(str,body))
-    body = strip_tags(body)
     print body
+    print '\n\n\n'
+    print 'List as follows:'
+    words = convertToList(body)
+    print words
