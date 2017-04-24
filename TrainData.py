@@ -4,11 +4,10 @@ import os
 def analyzeEmail(bodyOfEmail, isSpam, totalSpamWord, totalHamWord):
 
     if(isSpam):
-
+        if c.execute("SELECT EXISTS(SELECT * FROM Email WHERE From text='Leonard')") is True:
         #TODO:Check if word exist in database
         #if so increase  for spam frequency
         #else create entry for data base and set spam frequency to 1 and HAM =0
-
         totalSpamWord += 1
 
 
