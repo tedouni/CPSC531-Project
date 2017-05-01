@@ -44,10 +44,10 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
     #SPAM
     for fileName in os.listdir(pathSpam):
         wordList = parseEmail(pathSpam + fileName)
-        print wordList
+        # print wordList
         numberOfSpam += 1
         totalEmail += 1
-        #analyzeEmail(wordList,True,totalSpamWord,totalHamWord)
+        # analyzeEmail(wordList,True,totalSpamWord,totalHamWord)
 
 
     #HAM
@@ -55,17 +55,17 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
         wordList= parseEmail(pathHam + fileName)
         numberOfHam += 1
         totalEmail += 1
-        #analyzeEmail(wordList,False,totalSpamWord,totalHamWord)
+        # analyzeEmail(wordList,False,totalSpamWord,totalHamWord)
 
 
     pIsHam = float(numberOfHam)/float(totalEmail)
     pIsSpam = float(numberOfSpam)/float(totalEmail)
 
-    print pIsHam
-    print pIsSpam
 
 
 
+    return totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam
 
 
-train(0,0,0,0,0,0,0)
+
+# train(0,0,0,0,0,0,0)
