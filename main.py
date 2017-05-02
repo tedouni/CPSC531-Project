@@ -40,12 +40,13 @@ def main():
     pIsSpam = 0
     pIsHam = 0
 
-    #will not return anything, will just modify current values and
-    #modify database
+
+
     totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam = train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
     print pIsHam
     print pIsSpam
-
+    print totalSpamWord
+    print totalHamWord
 
 
 
