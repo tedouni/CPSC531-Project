@@ -3,27 +3,15 @@ import os
 from createDatabase import checkWords
 from createDatabase import updateFrequencies
 from createDatabase import insertWords
+from createDatabase import updateConditionals
 
 
 
-
-def calculateConditional(databaseConnection):
+def calculateConditional(totalSpamWord,totalHamWord):
     #use this at the end of training data
     #used to calculate P(B_i |A_x) and P(B_i | NOT A_x)
 
-    # TODO:
 
-    #iterate through database :
-    #spam
-
-    #P(word |A)
-    #db.bGivenA = db.wordFreqForSpam/(float)totalSpamWord
-
-    #ham
-
-
-    #P(word | NOT A)
-    #db.bGivenNotA =wordFreqForHam/(float)totalHamWord
 
 
 def retrieveConditional(word,isSpam, databaseConnection):
@@ -90,6 +78,7 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
             pass
 
     #HAM dir
+
     for fileName in os.listdir(pathHam):
         wordList= parseEmail(pathHam + fileName)
 

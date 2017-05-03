@@ -1,7 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from TrainData import train
 from TrainData import analyzeEmail
-from createDatabase import createTables
 import os
+from DatabaseManage import createTable
+import time
+from DatabaseManage import updateConditionals
+
 
 # import createDatabase
 #
@@ -32,6 +37,9 @@ def main():
 
     #Initiate to 0
 
+    start = time.time()
+    print ("start of program")
+
     totalSpamWord =0
     totalHamWord =0
     totalEmail =0
@@ -40,13 +48,22 @@ def main():
     pIsSpam = 0
     pIsHam = 0
 
-
+    #Create database
+    createTable()
 
     totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam = train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
+    updateConditionals(totalSpamWord,totalHamWord)
+
     print pIsHam
     print pIsSpam
+    print totalEmail
+    print numberOfSpam
+    print numberOfHam
     print totalSpamWord
     print totalHamWord
+
+    end = time.time()
+    print end - start
 
 
 
