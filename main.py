@@ -64,8 +64,7 @@ def main():
     print pIsHam
     print pIsSpam
     print totalEmail
-    print numberOfSpam
-    print numberOfHam
+
     # print totalSpamWord
     # print totalHamWord
 
