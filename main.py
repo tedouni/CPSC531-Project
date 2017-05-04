@@ -61,11 +61,11 @@ def main():
     classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
 
 
-    # print pIsHam
-    # print pIsSpam
-    # print totalEmail
-    # print numberOfSpam
-    # print numberOfHam
+    print pIsHam
+    print pIsSpam
+    print totalEmail
+    print numberOfSpam
+    print numberOfHam
     # print totalSpamWord
     # print totalHamWord
 

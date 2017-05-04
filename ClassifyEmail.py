@@ -17,10 +17,17 @@ def calculateConditionalForEmail(wordList,isSpam):
         #if word is in database:
         wordExist = doesWordExist(word)
         if(wordExist):
+            #returned as Decimal
             conditonal = retrieveConditional(word,isSpam)
-            multiples *= conditonal
+            if (conditonal == 0):
+                #skip calculation if 0
+                pass
+            else:
+
+                multiples = Decimal(multiples)*conditonal
         else:
             #word doesn't exist, ignore.
+            # print word
             pass
 
     return multiples
@@ -47,14 +54,16 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
         conditionalProbNotSpam = calculateConditionalForEmail(wordList, False)
 
 
-        calcProbIsSpam = conditionalProbIsSpam * pIsSpam
-        calcProbIsHam = conditionalProbNotSpam * pIsHam
+        calcProbIsSpam = Decimal(conditionalProbIsSpam) * Decimal(pIsSpam)
+        calcProbIsHam = Decimal(conditionalProbNotSpam) * Decimal(pIsHam)
 
         if(calcProbIsSpam > calcProbIsHam):
             calcNumOfSpam += 1
             #E-mail is calculated to be spam
         elif(calcProbIsSpam == calcProbIsHam):
             calcEqualProb += 1
+            print 'undetermined in SPAM'
+            print calcProbIsSpam, calcProbIsHam
 
         else:
             #E-mail is calculated to NOT be spam
@@ -80,7 +89,7 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
             #E-mail is calculated to be spam
         elif(calcProbIsSpam == calcProbIsHam):
             calcEqualProb += 1
-            print 'undetermined'
+            print 'undetermined in HAM'
             print calcProbIsSpam, calcProbIsHam
 
         else:

@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 import sqlite3
 import os
+from decimal import Decimal
 
 def createTable():
     conn = sqlite3.connect('keywords.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS keywords
-             (keyword TEXT, spamFrequency REAL , hamfrequency REAL, bGivenA REAL, bGivenNotA REAL)''')
+             (keyword TEXT, spamFrequency REAL , hamfrequency REAL, bGivenA TEXT, bGivenNotA TEXT)''')
 
     conn.commit()
     conn.close()
@@ -40,10 +41,8 @@ def retrieveConditional(word, isSpam):
         bGivenA = tempList[0]
         conn.commit()
         conn.close()
-        #to remove undetermined probabilities
-        if (bGivenA <= 0.00003):
-            bGivenA = 1
-        return bGivenA
+
+        return Decimal(bGivenA)
 
     else:
         # retrieve value ,   not spam means look for bGivenNotA
@@ -52,11 +51,8 @@ def retrieveConditional(word, isSpam):
         bGivenNotA = tempList[0]
         conn.commit()
         conn.close()
-        #to remove undetermined probabilities
 
-        if (bGivenNotA <= 0.00003):
-            bGivenNotA = 1
-        return bGivenNotA
+        return Decimal(bGivenNotA)
 
 
 def addWord(word, isSpam):
@@ -116,34 +112,29 @@ def updateConditionals(totalSpamWord,totalHamWord):
         c.execute("SELECT spamFrequency FROM keywords WHERE keyword = ? ",[word])
         tempRetS =  list(c.fetchone())
 
-        if(tempRetS[0] == 0):
-            spamFreq = 1.0
-        else:
-            spamFreq = tempRetS[0]
+        spamFreq = tempRetS[0]
 
 
 
         #get hamFrequency for word
         c.execute("SELECT hamFrequency FROM keywords WHERE keyword = ? ",[word])
         tempRetH =  list(c.fetchone())
-        if(tempRetH[0] == 0):
-            hamFreq = 1.0
-        else:
-            hamFreq = tempRetH[0]
+
+        hamFreq = tempRetH[0]
 
         #now do calculation
 
         #P(word |A)
         #db.bGivenA = db.wordFreqForSpam/totalSpamWord
-        tempBGivenA = float(spamFreq)/float(totalSpamWord)
+        tempBGivenA = Decimal(spamFreq)/Decimal(totalSpamWord)
 
         #P(word | NOT A)
         #db.bGivenNotA =wordFreqForHam/totalHamWord
-        tempBGivenNotA = float(hamFreq)/float(totalHamWord)
+        tempBGivenNotA = Decimal(hamFreq)/Decimal(totalHamWord)
 
-        c.execute('''UPDATE keywords SET bGivenA = ? WHERE keyword = ? ''', (tempBGivenA, word))
+        c.execute('''UPDATE keywords SET bGivenA = ? WHERE keyword = ? ''', (str(tempBGivenA), word))
 
-        c.execute('''UPDATE keywords SET bGivenNotA = ? WHERE keyword = ? ''', (tempBGivenNotA, word))
+        c.execute('''UPDATE keywords SET bGivenNotA = ? WHERE keyword = ? ''', (str(tempBGivenNotA), word))
         # print tempBGivenA, tempBGivenNotA
 
 
