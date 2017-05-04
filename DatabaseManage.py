@@ -3,7 +3,6 @@
 import sqlite3
 import os
 
-
 def createTable():
     conn = sqlite3.connect('keywords.db')
     c = conn.cursor()
@@ -12,6 +11,53 @@ def createTable():
 
     conn.commit()
     conn.close()
+
+def doesWordExist(word):
+    conn = sqlite3.connect('keywords.db')
+    conn.text_factory = str
+    c = conn.cursor()
+
+    c.execute("SELECT keyword FROM keywords WHERE keyword = ?", [word])
+    data=c.fetchone()
+
+    if data is None:
+        return False
+    else:
+        return True
+
+
+def retrieveConditional(word, isSpam):
+    conn = sqlite3.connect('keywords.db')
+    conn.text_factory = str
+    c = conn.cursor()
+
+    if(isSpam):
+
+        # TODO:
+        #retrieve value ,   isSpam means look for bGivenA
+        c.execute("SELECT bGivenA FROM keywords WHERE keyword = ? ",[word])
+        tempList =  list(c.fetchone())
+        bGivenA = tempList[0]
+        conn.commit()
+        conn.close()
+        #to remove undetermined probabilities
+        if (bGivenA <= 0.00003):
+            bGivenA = 1
+        return bGivenA
+
+    else:
+        # retrieve value ,   not spam means look for bGivenNotA
+        c.execute("SELECT bGivenNotA FROM keywords WHERE keyword = ? ",[word])
+        tempList =  list(c.fetchone())
+        bGivenNotA = tempList[0]
+        conn.commit()
+        conn.close()
+        #to remove undetermined probabilities
+
+        if (bGivenNotA <= 0.00003):
+            bGivenNotA = 1
+        return bGivenNotA
+
 
 def addWord(word, isSpam):
     conn = sqlite3.connect('keywords.db')
@@ -58,14 +104,13 @@ def addWord(word, isSpam):
 def updateConditionals(totalSpamWord,totalHamWord):
     conn = sqlite3.connect('keywords.db')
     conn.text_factory = str
-
     c = conn.cursor()
 
     c.execute('SELECT * FROM keywords')
     table = c.fetchall()
     for row in table:
         word = row[0]
-        print word
+        # print word
 
         #get spamFrequency for word
         c.execute("SELECT spamFrequency FROM keywords WHERE keyword = ? ",[word])
@@ -90,16 +135,16 @@ def updateConditionals(totalSpamWord,totalHamWord):
 
         #P(word |A)
         #db.bGivenA = db.wordFreqForSpam/totalSpamWord
-        tempBGivenA = spamFreq/float(totalSpamWord)
+        tempBGivenA = float(spamFreq)/float(totalSpamWord)
 
         #P(word | NOT A)
         #db.bGivenNotA =wordFreqForHam/totalHamWord
-        tempBGivenNotA = hamFreq/float(totalHamWord)
+        tempBGivenNotA = float(hamFreq)/float(totalHamWord)
 
         c.execute('''UPDATE keywords SET bGivenA = ? WHERE keyword = ? ''', (tempBGivenA, word))
 
         c.execute('''UPDATE keywords SET bGivenNotA = ? WHERE keyword = ? ''', (tempBGivenNotA, word))
-        print tempBGivenA, tempBGivenNotA
+        # print tempBGivenA, tempBGivenNotA
 
 
     conn.commit()

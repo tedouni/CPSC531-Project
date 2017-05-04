@@ -1,45 +1,27 @@
 from ParseEmail import parseEmail
 import os
-from createDatabase import checkWords
-from createDatabase import updateFrequencies
-from createDatabase import insertWords
-from createDatabase import updateConditionals
+from DatabaseManage import retrieveConditional
+from DatabaseManage import doesWordExist
+from decimal import Decimal
 
 
-
-def calculateConditional(totalSpamWord,totalHamWord):
-    #use this at the end of training data
-    #used to calculate P(B_i |A_x) and P(B_i | NOT A_x)
-
-
-
-
-def retrieveConditional(word,isSpam, databaseConnection):
-    if(isSpam):
-
-        # TODO:
-        #retrieve value ,   isSpam means look for bGivenA
-        return bGivenA
-
-    else:
-        # retrieve value ,   not spam means look for bGivenNotA
-        return bGivenNotA
 
 
 #calculate
-def calculateConditionalForEmail(wordList,isSpam,databaseConnection):
+def calculateConditionalForEmail(wordList,isSpam):
 
     multiples = 1.0
 
-        for word in wordList:
-            #CHECK IF WORD IS IN DATABASE.
-            #if word is in database:
-
-                conditonal = retrieveConditional(word,isSpam,databaseConnection)
-                multiples *= conditonal
-
-            #else (word not in database):
-                #pass
+    for word in wordList:
+        #CHECK IF WORD IS IN DATABASE.
+        #if word is in database:
+        wordExist = doesWordExist(word)
+        if(wordExist):
+            conditonal = retrieveConditional(word,isSpam)
+            multiples *= conditonal
+        else:
+            #word doesn't exist, ignore.
+            pass
 
     return multiples
 
@@ -51,9 +33,9 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
     calcNumOfSpam = 0
     actualNumOfHam = 0
     calcNumOfHam = 0
+    calcEqualProb = 0
 
-    #initiate database connection
-    calculateConditional(databaseConnection)
+
 
     #SPAM dir
     for fileName in os.listdir(pathSpam):
@@ -61,8 +43,8 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
 
         actualNumOfSpam += 1
 
-        conditionalProbIsSpam = calculateConditionalForEmail(wordList, True, databaseConnection)
-        conditionalProbNotSpam = calculateConditionalForEmail(wordList, False, databaseConnection)
+        conditionalProbIsSpam = calculateConditionalForEmail(wordList, True)
+        conditionalProbNotSpam = calculateConditionalForEmail(wordList, False)
 
 
         calcProbIsSpam = conditionalProbIsSpam * pIsSpam
@@ -71,11 +53,13 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
         if(calcProbIsSpam > calcProbIsHam):
             calcNumOfSpam += 1
             #E-mail is calculated to be spam
-            pass
+        elif(calcProbIsSpam == calcProbIsHam):
+            calcEqualProb += 1
+
         else:
             #E-mail is calculated to NOT be spam
             calcNumOfHam += 1
-            pass
+
 
     #HAM dir
 
@@ -89,16 +73,23 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
         conditionalProbNotSpam = calculateConditionalForEmail(wordList, False)
 
 
-        calcProbIsSpam = conditionalProbIsSpam * pIsSpam
-        calcProbIsHam = conditionalProbNotSpam * pIsHam
-
+        calcProbIsSpam = Decimal(conditionalProbIsSpam) * Decimal(pIsSpam)
+        calcProbIsHam = Decimal(conditionalProbNotSpam) * Decimal(pIsHam)
         if(calcProbIsSpam > calcProbIsHam):
             calcNumOfSpam += 1
             #E-mail is calculated to be spam
-            pass
+        elif(calcProbIsSpam == calcProbIsHam):
+            calcEqualProb += 1
+            print 'undetermined'
+            print calcProbIsSpam, calcProbIsHam
+
         else:
             #E-mail is calculated to NOT be spam
             calcNumOfHam += 1
-            pass
 
-    # TODO: Create function for statistic accuracy etc.
+    print 'Calculated Spam,  actual number of spam'
+    print calcNumOfSpam,numberOfSpam
+    print 'calculated not spam, actual number of not spam'
+    print calcNumOfHam, numberOfHam
+    print 'undetermined'
+    print calcEqualProb

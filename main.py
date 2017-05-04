@@ -6,6 +6,8 @@ import os
 from DatabaseManage import createTable
 import time
 from DatabaseManage import updateConditionals
+from ClassifyEmail import classify
+
 
 
 # import createDatabase
@@ -51,16 +53,21 @@ def main():
     #Create database
     createTable()
 
+    #train data
     totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam = train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
-    updateConditionals(totalSpamWord,totalHamWord)
 
-    print pIsHam
-    print pIsSpam
-    print totalEmail
-    print numberOfSpam
-    print numberOfHam
-    print totalSpamWord
-    print totalHamWord
+    #Calculate conditionals for all words in test data
+    updateConditionals(totalSpamWord,totalHamWord)
+    classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
+
+
+    # print pIsHam
+    # print pIsSpam
+    # print totalEmail
+    # print numberOfSpam
+    # print numberOfHam
+    # print totalSpamWord
+    # print totalHamWord
 
     end = time.time()
     print end - start
