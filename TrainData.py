@@ -1,8 +1,7 @@
 from ParseEmail import parseEmail
 import os
 from DatabaseManage import addWord
-
-
+from DatabaseManage import createTable
 
 
 def analyzeEmail(bodyOfEmail, isSpam, totalSpamWord, totalHamWord):
@@ -33,9 +32,21 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
     #start train for spam
     #spamData = emails that are spam
     #hamData = emails that are not spam
+    tempFileName = 'numOfWords.txt'
 
+    try:
+        os.remove(tempFileName)
 
+    except:
+        print tempFileName,' does not exist'
 
+    try:
+        os.remove('keywords.db')
+        print 'Success in deleting keywords.db'
+    except:
+        print 'keywords.db does not exist, creating'
+
+    createTable()
     pathHam = '/Users/tedouni/Desktop/531Project/trainData/ham/'
     pathSpam = '/Users/tedouni/Desktop/531Project/trainData/spam/'
 
@@ -71,6 +82,23 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
     pIsSpam = float(numberOfSpam)/float(totalEmail)
 
 
+    #Store totalSpamWord and totalHamWord
+    target = open(tempFileName, 'w')
+    target.write(str(numberOfSpam))
+    target.write(' ')
+    target.write(str(numberOfHam))
+    target.write(' ')
+    target.write(str(totalSpamWord))
+    target.write(' ')
+    target.write(str(totalHamWord))
+    target.write(' ')
+    target.write(str(pIsSpam))
+    target.write(' ')
+    target.write(str(pIsHam))
+    target.close()
 
-
+    print numberOfSpam
+    print numberOfHam
+    print totalSpamWord
+    print totalHamWord
     return totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam

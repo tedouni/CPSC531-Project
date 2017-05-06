@@ -50,8 +50,6 @@ def main():
     pIsSpam = 0
     pIsHam = 0
 
-    #Create database
-    createTable()
 
     #train data
     totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam = train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
@@ -61,9 +59,7 @@ def main():
     classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
 
 
-    print pIsHam
-    print pIsSpam
-    print totalEmail
+#
 
     # print totalSpamWord
     # print totalHamWord
