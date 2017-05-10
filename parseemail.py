@@ -26,6 +26,7 @@ def strip_tags(html):
 
 def convertToList(body):
     #Remove HTML
+    body.decode("utf-8")
     body = strip_tags(body)
 
     #remove punctuation

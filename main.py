@@ -54,8 +54,8 @@ def main():
     #train data
     # print 'Training Data'
     # totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam = train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
-
-    #Calculate conditionals for all words in test data
+    #
+    # # Calculate conditionals for all words in test data
     # print 'updating conditionals'
     # updateConditionals(totalSpamWord,totalHamWord)
     print 'starting classifying e-mails'
@@ -68,7 +68,7 @@ def main():
     # print totalHamWord
 
     end = time.time()
-    # print (end - start)/float(60),' minutes'
+    print (end - start)/float(60),' minutes'
 
 
 
