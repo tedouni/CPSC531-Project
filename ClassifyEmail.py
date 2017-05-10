@@ -5,12 +5,21 @@ from DatabaseManage import doesWordExist
 from decimal import Decimal
 
 
-def analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions):
+def analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions,spamCalcToHam ,hamCalcToSpam,probSpamHigherThan70,probSpamLessThan70,pIsSpam,pIsHam):
     total = actualNumOfHam+actualNumOfSpam
     accuracy = correctPredictions/float(total)
+    print 'P(isSpam): ',pIsSpam
+    print 'P(~spam): ',pIsHam
+    print 'Actual spam e-mails: ',actualNumOfSpam
+    print 'Actual non-spam e-mails: ', actualNumOfHam
     print 'Accuracy: ', correctPredictions, accuracy
     error = incorrectPredictions/float(total)
     print 'Error:', incorrectPredictions, error
+    print 'non-spam e-mails determined to be spam: ',hamCalcToSpam
+    print 'spam e-mails determined to be non-spam: ',spamCalcToHam
+    print 'Number of emails prob is spam higher than  ',pIsSpam,": ",probSpamHigherThan70
+    print 'Number of emails prob is spam less than  ',pIsSpam,": ",probSpamLessThan70
+
 
 
 
@@ -69,6 +78,10 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
     calcEqualProb = 0
     correctPredictions = 0
     incorrectPredictions = 0
+    spamCalcToHam = 0
+    hamCalcToSpam = 0
+    probSpamHigherThan70 = 0
+    probSpamLessThan70 = 0
 
 
     #SPAM dir
@@ -88,13 +101,18 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
         if(calcProbIsSpam > calcProbIsHam):
             calcNumOfSpam += 1
             correctPredictions += 1
-
         #E-mail is calculated to NOT be spam
         else:
             calcNumOfHam += 1
+            spamCalcToHam += 1
             incorrectPredictions += 1
 
+        if(calcProbIsSpam > pIsSpam):
+            probSpamHigherThan70 += 1
+        else:
+            probSpamLessThan70 += 1
 
+        print 'calcIsSpam,calcNotSpam: ',calcProbIsSpam,' ',calcProbIsHam
 
 
     #HAM dir
@@ -116,13 +134,18 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
         if(calcProbIsSpam > calcProbIsHam):
             calcNumOfSpam += 1
             incorrectPredictions += 1
+            hamCalcToSpam += 1
 
         #E-mail is calculated to NOT be spam
         else:
             calcNumOfHam += 1
             correctPredictions += 1
 
+        if(calcProbIsSpam > pIsSpam):
+            probSpamHigherThan70 += 1
+        else:
+            probSpamLessThan70 += 1
 
+        print 'calcIsSpam,calcNotSpam: ',calcProbIsSpam,' ',calcProbIsHam
 
-
-    analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions)
+    analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions,spamCalcToHam ,hamCalcToSpam,probSpamHigherThan70,probSpamLessThan70,pIsSpam,pIsHam)
