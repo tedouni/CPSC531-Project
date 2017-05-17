@@ -47,8 +47,8 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
         print 'keywords.db does not exist, creating'
 
     createTable()
-    pathHam = '/Users/tedouni/Desktop/531Project/trainData/ham/'
-    pathSpam = '/Users/tedouni/Desktop/531Project/trainData/spam/'
+    pathHam = '/Users/tedouni/Desktop/CPSC531-Project/trainData/ham/'
+    pathSpam = '/Users/tedouni/Desktop/CPSC531-Project/trainData/spam/'
 
     #SPAM
     print 'Doing SPAM Directory'
@@ -97,8 +97,8 @@ def train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam
     target.write(str(pIsHam))
     target.close()
 
-    print numberOfSpam
-    print numberOfHam
-    print totalSpamWord
-    print totalHamWord
+    # print numberOfSpam
+    # print numberOfHam
+    # print totalSpamWord
+    # print totalHamWord
     return totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam

@@ -35,40 +35,35 @@ from ClassifyEmail import classify
 
 
 def main():
-    #Create database
 
-    #Initiate to 0
+    RunProg = True
+    while(RunProg == True):
+        totalSpamWord =0
+        totalHamWord =0
+        totalEmail =0
+        numberOfSpam = 0
+        numberOfHam = 0
+        pIsSpam = 0
+        pIsHam = 0
+        print '1. Train Data (Includes Update Conditionals)'
+        print '2. Classify Emails'
+        print '3. Quit Program'
+        userInput = raw_input('Enter option: ')
+        if userInput == '3':
+            print 'Exiting program.'
+            RunProg = False
+        elif (userInput == '1'):
+            print 'Training Data'
+            totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam = train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
+            print 'Updating Conditionals'
+            updateConditionals(totalSpamWord,totalHamWord)
+        elif (userInput == '2'):
+            print 'Classifying emails'
+            classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
 
-    start = time.time()
-    print ("start of program")
-
-    totalSpamWord =0
-    totalHamWord =0
-    totalEmail =0
-    numberOfSpam = 0
-    numberOfHam = 0
-    pIsSpam = 0
-    pIsHam = 0
 
 
-    #train data
-    # print 'Training Data'
-    # totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam = train(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
-    #
-    # # Calculate conditionals for all words in test data
-    # print 'updating conditionals'
-    # updateConditionals(totalSpamWord,totalHamWord)
-    print 'starting classifying e-mails'
-    classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam)
 
-
-#
-
-    # print totalSpamWord
-    # print totalHamWord
-
-    end = time.time()
-    print (end - start)/float(60),' minutes'
 
 
 

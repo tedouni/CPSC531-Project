@@ -5,7 +5,7 @@ from DatabaseManage import doesWordExist
 from decimal import Decimal
 
 
-def analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions,spamCalcToHam ,hamCalcToSpam,probSpamHigherThan70,probSpamLessThan70,pIsSpam,pIsHam):
+def analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions,spamCalcToHam ,hamCalcToSpam,pIsSpam,pIsHam):
     total = actualNumOfHam+actualNumOfSpam
     accuracy = correctPredictions/float(total)
     print 'P(isSpam): ',pIsSpam
@@ -17,8 +17,7 @@ def analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredicti
     print 'Error:', incorrectPredictions, error
     print 'non-spam e-mails determined to be spam: ',hamCalcToSpam
     print 'spam e-mails determined to be non-spam: ',spamCalcToHam
-    print 'Number of emails prob is spam higher than  ',pIsSpam,": ",probSpamHigherThan70
-    print 'Number of emails prob is spam less than  ',pIsSpam,": ",probSpamLessThan70
+
 
 
 
@@ -49,8 +48,8 @@ def calculateConditionalForEmail(wordList,isSpam):
     return multiples
 
 def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsSpam,pIsHam):
-    pathHam = '/Users/tedouni/Desktop/531Project/testData/ham/'
-    pathSpam = '/Users/tedouni/Desktop/531Project/testData/spam/'
+    pathHam = '/Users/tedouni/Desktop/CPSC531-Project/testData/ham/'
+    pathSpam = '/Users/tedouni/Desktop/CPSC531-Project/testData/spam/'
 
     #incase run program without trainData
     #will load totalSpamword and totalHamWord from text fileName
@@ -80,8 +79,7 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
     incorrectPredictions = 0
     spamCalcToHam = 0
     hamCalcToSpam = 0
-    probSpamHigherThan70 = 0
-    probSpamLessThan70 = 0
+
 
 
     #SPAM dir
@@ -107,12 +105,10 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
             spamCalcToHam += 1
             incorrectPredictions += 1
 
-        if(calcProbIsSpam > pIsSpam):
-            probSpamHigherThan70 += 1
-        else:
-            probSpamLessThan70 += 1
 
-        print 'calcIsSpam,calcNotSpam: ',calcProbIsSpam,' ',calcProbIsHam
+
+
+        # print 'calcIsSpam,calcNotSpam: ',calcProbIsSpam,' ',calcProbIsHam
 
 
     #HAM dir
@@ -141,11 +137,8 @@ def classify(totalSpamWord,totalHamWord,totalEmail,numberOfSpam,numberOfHam,pIsS
             calcNumOfHam += 1
             correctPredictions += 1
 
-        if(calcProbIsSpam > pIsSpam):
-            probSpamHigherThan70 += 1
-        else:
-            probSpamLessThan70 += 1
 
-        print 'calcIsSpam,calcNotSpam: ',calcProbIsSpam,' ',calcProbIsHam
 
-    analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions,spamCalcToHam ,hamCalcToSpam,probSpamHigherThan70,probSpamLessThan70,pIsSpam,pIsHam)
+        # print 'calcIsSpam,calcNotSpam: ',calcProbIsSpam,' ',calcProbIsHam
+
+    analysis(actualNumOfHam,actualNumOfSpam,correctPredictions,incorrectPredictions,spamCalcToHam ,hamCalcToSpam,pIsSpam,pIsHam)
